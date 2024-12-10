@@ -1,0 +1,9 @@
+version: "1"
+
+tasks:
+  generate:
+    aliases:
+      - gen
+    desc: "Generate code from proto files"
+    cmds:
+      - protoc -I proto protos/proto/checkuser/checkuser.proto --go_out=./protos/gen/go --go_opt=paths=source_relative --go-grpc_out=./protos/gen/go --go-grpc_opt=paths=source_relative --proto_path=./protos/proto
