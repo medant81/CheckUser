@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package checkUser;
+
+option go_package = "checkUser.v1;checkUserV1";
+
+//import "protos/proto/google/api/annotations.proto";
+//import "google/protobuf/wrappers.proto";
+
+
+
+service check_users {
+  rpc Token (TokenRequest) returns (TokenResponse){
+    //option (google.api.http) = {
+    //  get: "/token"
+    //};
+  };
+  rpc check_users (CheckUsersRequest) returns (CheckUsersResponse){
+    //option (google.api.http) = {
+    //  get: "/check_users"
+    //};
+  }
+}
+
+message TokenResponse {
+  string token = 1; // Auth token of the logged in user.
+}
+
+message TokenRequest {
+  string username = 1; // Auth token of the logged in user.
+  string password = 2;
+}
+
+message typeUsers {
+  int64 id = 1;
+  bool check = 2;
+}
+
+message CheckUsersRequest {
+  string token = 1; // Auth token of the logged in user.
+  repeated int64 users = 2;
+}
+
+message CheckUsersResponse {
+  repeated typeUsers users = 1;
+}

@@ -1,0 +1,17 @@
+env: "local"
+
+storage_path: "./storage/ss.db"
+
+token_ttl: 1h
+
+grpc:
+  port: 44044
+  timeout: 10m
+
+storage:
+  server: TRAMPAMPAM\SQL2017
+  host: localhost
+  port: 0
+  database: integ01
+  username: admingo
+  password: admingo
