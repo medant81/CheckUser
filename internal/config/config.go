@@ -8,12 +8,13 @@ import (
 )
 
 type Config struct {
-	Env            string     `yaml:"env" env-default:"local"`
-	StoragePath    string     `yaml:"storage_path" env-required:"true"`
-	GRPC           GRPCConfig `yaml:"grpc"`
-	MigrationsPath string
-	TokenTTL       time.Duration `yaml:"token_ttl" env-default:"1h"`
-	Storage        DBConfig      `yaml:"storage"`
+	Env              string     `yaml:"env" env-default:"local"`
+	StoragePath      string     `yaml:"storage_path" env-required:"true"`
+	GRPC             GRPCConfig `yaml:"grpc"`
+	MigrationsPath   string
+	TokenTTL         time.Duration          `yaml:"token_ttl" env-default:"1h"`
+	Storage          DBConfig               `yaml:"storage"`
+	StorageProcedure StorageProcedureConfig `yaml:"storage_procedure"`
 }
 
 type GRPCConfig struct {
@@ -23,10 +24,18 @@ type GRPCConfig struct {
 
 type DBConfig struct {
 	Server   string `yaml:"server" env-required:"true"`
+	Host     string `yaml:"host"`
+	Path     string `yaml:"path"`
 	Port     int    `yaml:"port"`
 	Database string `yaml:"database" env-required:"true"`
 	User     string `yaml:"username"`
 	Password string `yaml:"password"`
+}
+
+type StorageProcedureConfig struct {
+	NameSP    string `yaml:"name_sp"`
+	NameParam string `yaml:"name_param"`
+	TvpType   string `yaml:"tvp_type"`
 }
 
 func MustLoad() *Config {

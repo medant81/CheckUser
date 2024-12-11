@@ -10,8 +10,14 @@ grpc:
 
 storage:
   server: TRAMPAMPAM\SQL2017
-  host: localhost
+  host: TRAMPAMPAM
+  path: SQL2017
   port: 0
   database: integ01
   username: admingo
   password: admingo
+
+storage_procedure:
+  name_sp: "[dbo].[BOT_AdminChat_Dismissed@check]"
+  name_param: "telegram_id"
+  tvp_type: "dbo.TvpBigInt"

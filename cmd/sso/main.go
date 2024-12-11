@@ -3,7 +3,6 @@ package main
 import (
 	"CheckUser/internal/app"
 	"CheckUser/internal/config"
-	"fmt"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -26,7 +25,7 @@ func main() {
 		slog.Any("cfg", cfg),
 		slog.Int("port", cfg.GRPC.Port),
 	)
-	portStr := ""
+	/*portStr := ""
 	if cfg.Storage.Port > 0 {
 		portStr = fmt.Sprintf(";port=%d", cfg.Storage.Port)
 	}
@@ -35,9 +34,9 @@ func main() {
 		portStr,
 		cfg.Storage.User,
 		cfg.Storage.Password,
-		cfg.Storage.Database)
+		cfg.Storage.Database)*/
 
-	application := app.New(log, cfg.GRPC.Port, connString, cfg.TokenTTL)
+	application := app.New(log, cfg.GRPC.Port, cfg.Storage, cfg.StorageProcedure, cfg.TokenTTL)
 
 	go application.GRPCSrv.MustRun()
 

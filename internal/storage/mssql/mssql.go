@@ -1,23 +1,41 @@
 package mssql
 
 import (
+	"CheckUser/internal/config"
 	"CheckUser/internal/models"
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/microsoft/go-mssqldb/azuread"
+	_ "github.com/microsoft/go-mssqldb"
+	mssql "github.com/microsoft/go-mssqldb"
+	"net/url"
 )
 
 type Storage struct {
 	db *sql.DB
+	sp StorageProcedure
 }
 
-func New(storagePath string) (*Storage, error) {
+type StorageProcedure struct {
+	NameSP    string
+	NameParam string
+	TvpType   string
+}
+
+func New(dbConfig config.DBConfig, sp config.StorageProcedureConfig) (*Storage, error) {
 	const op = "storage.mssql.New"
 
-	db, err := sql.Open(azuread.DriverName, storagePath)
-	//db, err := sql.Open(azuread.DriverName, "server=TRAMPAMPAM\\SQL2017;user id=admingo;password=admingo;database=integ01;")
-	//db, err := sql.Open(azuread.DriverName, "TRAMPAMPAM\\SQL2017;port=1433;database=integ01;fedauth=ActiveDirectoryDefault;")
+	query := url.Values{}
+	query.Add("database", dbConfig.Database)
+	u := &url.URL{
+		Scheme:   "sqlserver",
+		User:     url.UserPassword(dbConfig.User, dbConfig.Password),
+		Host:     dbConfig.Host,
+		Path:     dbConfig.Path, // if connecting to an instance instead of a port
+		RawQuery: query.Encode(),
+	}
+
+	db, err := sql.Open("sqlserver", u.String())
 
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
@@ -29,7 +47,13 @@ func New(storagePath string) (*Storage, error) {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	return &Storage{db: db}, nil
+	return &Storage{
+		db: db,
+		sp: StorageProcedure{
+			NameSP:    sp.NameSP,
+			NameParam: sp.NameParam,
+			TvpType:   sp.TvpType,
+		}}, nil
 }
 
 func (s *Storage) Stop() error {
@@ -39,14 +63,27 @@ func (s *Storage) Stop() error {
 func (s *Storage) UsersCheck(ctx context.Context, userID []int64) (models.UsersResult, error) {
 	const op = "storage.mssql.UsersCheck"
 
+	type tableTvp struct {
+		Id int64
+	}
+
+	tableTVPDate := make([]tableTvp, 0)
+
+	for _, element := range userID {
+		tableTVPDate = append(tableTVPDate, tableTvp{Id: element})
+	}
+
+	tvpType := mssql.TVP{
+		TypeName: s.sp.TvpType,
+		Value:    tableTVPDate,
+	}
+
 	err := s.db.PingContext(ctx)
 	if err != nil {
 		return models.UsersResult{}, fmt.Errorf("%s: %w", op, err)
 	}
 
-	tsql := `DECLARE	@return_value int
-				EXEC	@return_value = [dbo].[BOT_AdminChat_Dismissed@check]
-				@telegram_id = 132456789`
+	tsql := fmt.Sprintf("EXEC %s @%s", s.sp.NameSP, s.sp.NameParam)
 
 	stmt, err := s.db.Prepare(tsql)
 	if err != nil {
@@ -54,21 +91,16 @@ func (s *Storage) UsersCheck(ctx context.Context, userID []int64) (models.UsersR
 	}
 	defer stmt.Close()
 
-	rows, err := stmt.QueryContext(ctx, sql.Named("telegram_id", 123465))
-	//row := stmt.QueryRowContext(ctx, sql.Named("telegram_id", 132456789))
+	rows, err := stmt.QueryContext(ctx, sql.Named("telegram_id", tvpType))
 
-	//var _usersRes models.UsersResult
 	Users := make(map[int64]bool, 0)
 	for rows.Next() {
 		var telegram_id, is_check int64
-		err_scan := rows.Scan(&telegram_id, &is_check)
-		if err_scan == nil {
+		errScan := rows.Scan(&telegram_id, &is_check)
+		if errScan == nil {
 			Users[telegram_id] = (is_check == 1)
 		}
 	}
-
-	//var output any
-	//err = row.Scan(output)
 
 	return models.UsersResult{Users: Users}, nil
 }
