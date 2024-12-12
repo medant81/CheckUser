@@ -1,4 +1,4 @@
-module CheckUser
+module github.com/medant81/CheckUser
 
 go 1.22.7
 
