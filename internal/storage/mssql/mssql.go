@@ -6,7 +6,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	_ "github.com/microsoft/go-mssqldb"
 	mssql "github.com/microsoft/go-mssqldb"
 	"net/url"
 )

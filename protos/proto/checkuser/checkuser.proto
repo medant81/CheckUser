@@ -31,16 +31,20 @@ message TokenRequest {
   string password = 2;
 }
 
-message typeUsers {
-  int64 id = 1;
-  bool check = 2;
-}
+//message typeUsers {
+//  int64 id = 1;
+//  bool check = 2;
+//}
 
 message CheckUsersRequest {
   string token = 1; // Auth token of the logged in user.
   repeated int64 users = 2;
 }
 
+//message CheckUsersResponse {
+//  repeated typeUsers users = 1;
+//}
+
 message CheckUsersResponse {
-  repeated typeUsers users = 1;
+  map <int64, bool> users = 1;
 }

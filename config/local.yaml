@@ -21,3 +21,7 @@ storage_procedure:
   name_sp: "[dbo].[BOT_AdminChat_Dismissed@check]"
   name_param: "telegram_id"
   tvp_type: "dbo.TvpBigInt"
+
+user:
+  username: "admin"
+  password_hash: "admin"

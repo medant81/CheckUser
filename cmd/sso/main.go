@@ -16,7 +16,7 @@ const (
 )
 
 func main() {
-
+	test := test.Test{}
 	cfg := config.MustLoad()
 
 	log := setupLogger(cfg.Env)
