@@ -60,7 +60,7 @@ func (s *Storage) Stop() error {
 	return s.db.Close()
 }
 
-func (s *Storage) UsersCheck(ctx context.Context, userID []int64) (models.UsersResult, error) {
+func (s *Storage) UsersCheckDB(ctx context.Context, userID []int64) (models.UsersResult, error) {
 	const op = "storage.mssql.UsersCheck"
 
 	type tableTvp struct {

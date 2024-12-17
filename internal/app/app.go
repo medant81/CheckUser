@@ -6,25 +6,23 @@ import (
 	"CheckUser/internal/servises/check"
 	"CheckUser/internal/storage/mssql"
 	"log/slog"
-	"time"
 )
 
 type App struct {
 	GRPCSrv *grpcapp.App
 }
 
-func New(log *slog.Logger, grpcPort int, dbConfig config.DBConfig, sp config.StorageProcedureConfig, tokenTTL time.Duration) *App {
+func New(log *slog.Logger, cf *config.Config) *App {
 
-	storage, err := mssql.New(dbConfig, sp)
-	//storage, err := mssql.New(cfg.Sto)
+	storage, err := mssql.New(cf.Storage, cf.StorageProcedure)
+
 	if err != nil {
 		panic(err)
 	}
 
-	// TODO: init check service
-	checkService := check.New(log, storage, storage, tokenTTL)
+	checkService := check.New(log, storage, storage, cf.TokenTTL)
 
-	grpcApp := grpcapp.New(log, checkService, grpcPort)
+	grpcApp := grpcapp.New(log, checkService, cf.GRPC.Port)
 
 	return &App{
 		GRPCSrv: grpcApp,

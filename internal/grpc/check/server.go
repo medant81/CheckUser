@@ -9,20 +9,21 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type Check interface {
-	Token(ctx context.Context, username string, password string, appID int) (token string, err error)
-	CheckUsers(ctx context.Context, usersId []int64) (usersRes models.UsersResult, err error)
+type ServisesCheck interface {
+	TokenServises(ctx context.Context, username string, password string, appID int) (token string, err error)
+	CheckUsersServises(ctx context.Context, tokenRes string, usersId []int64) (usersRes models.UsersResult, err error)
 }
 
 type serverAPI struct {
 	checkUserV1.UnimplementedCheckUsersServer
-	check Check
+	check ServisesCheck
 }
 
-func Register(gRPCServer *grpc.Server, check Check) {
+func Register(gRPCServer *grpc.Server, check ServisesCheck) {
 	checkUserV1.RegisterCheckUsersServer(gRPCServer, &serverAPI{check: check})
 }
 
+// Должен совпадать с proto
 func (s *serverAPI) Token(ctx context.Context, req *checkUserV1.TokenRequest) (*checkUserV1.TokenResponse, error) {
 
 	//username
@@ -35,7 +36,7 @@ func (s *serverAPI) Token(ctx context.Context, req *checkUserV1.TokenRequest) (*
 		return nil, status.Error(codes.InvalidArgument, "password is required")
 	}
 
-	token, err := s.check.Token(ctx, req.GetUsername(), req.GetPassword(), 1)
+	token, err := s.check.TokenServises(ctx, req.GetUsername(), req.GetPassword(), 1)
 	if err != nil {
 		// TODO: добавить обработку ошибок
 		return nil, status.Error(codes.Internal, "internal error")
@@ -46,6 +47,7 @@ func (s *serverAPI) Token(ctx context.Context, req *checkUserV1.TokenRequest) (*
 	}, nil
 }
 
+// Должен совпадать с proto
 func (s *serverAPI) CheckUsers(ctx context.Context, req *checkUserV1.CheckUsersRequest) (*checkUserV1.CheckUsersResponse, error) {
 
 	if req.GetToken() == "" {
@@ -56,16 +58,17 @@ func (s *serverAPI) CheckUsers(ctx context.Context, req *checkUserV1.CheckUsersR
 		return nil, status.Error(codes.InvalidArgument, "users is required")
 	}
 
-	// TODO: work checkUser
-	usersRes, err := s.check.CheckUsers(ctx, req.GetUsers())
+	usersRes, err := s.check.CheckUsersServises(ctx, req.GetToken(), req.GetUsers())
 
 	usersSlice := make([]*checkUserV1.TypeUsers, 0)
+	//usersMap := make(map[int64]bool)
 	for key, value := range usersRes.Users {
 		user := checkUserV1.TypeUsers{
 			Id:    key,
 			Check: value,
 		}
 		usersSlice = append(usersSlice, &user)
+		//usersMap[key] = value
 	}
 
 	if err != nil {

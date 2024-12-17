@@ -2,6 +2,7 @@ package jwt
 
 import (
 	"CheckUser/internal/models"
+	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"time"
 )
@@ -22,4 +23,23 @@ func NewToken(userName string, password string, app models.App, duration time.Du
 	}
 
 	return tokenString, nil
+}
+
+func ParseToken(accessToken string, app models.App) (string, error) {
+	token, err := jwt.Parse(accessToken, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(app.Secret), nil
+	})
+	if err != nil {
+		return "", err
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return "", fmt.Errorf("error get user claims from token")
+	}
+
+	return claims["sub"].(string), nil
 }

@@ -12,13 +12,13 @@ import (
 
 type Check struct {
 	log          *slog.Logger
-	usersChecker UsersChecker
+	usersChecker UsersCheckerDB
 	appProvider  AppProvider
 	tokenTTL     time.Duration
 }
 
-type UsersChecker interface {
-	UsersCheck(ctx context.Context, userID []int64) (models.UsersResult, error)
+type UsersCheckerDB interface {
+	UsersCheckDB(ctx context.Context, userID []int64) (models.UsersResult, error)
 	//TokenGet(ctx context.Context, userName string, password string, appID int) (string, error)
 }
 
@@ -27,7 +27,7 @@ type AppProvider interface {
 }
 
 // New returns a new instance of the Check service
-func New(log *slog.Logger, usersChecker UsersChecker, appProvider AppProvider, tokenTTL time.Duration) *Check {
+func New(log *slog.Logger, usersChecker UsersCheckerDB, appProvider AppProvider, tokenTTL time.Duration) *Check {
 	return &Check{
 		log:          log,
 		usersChecker: usersChecker,
@@ -36,7 +36,7 @@ func New(log *slog.Logger, usersChecker UsersChecker, appProvider AppProvider, t
 	}
 }
 
-func (c *Check) Token(ctx context.Context, userName string, password string, appID int) (string, error) {
+func (c *Check) TokenServises(ctx context.Context, userName string, password string, appID int) (string, error) {
 	const op = "check.Token"
 
 	log := c.log.With(
@@ -61,13 +61,13 @@ func (c *Check) Token(ctx context.Context, userName string, password string, app
 	return token, nil
 }
 
-func (c *Check) CheckUsers(ctx context.Context, userID []int64) (models.UsersResult, error) {
+func (c *Check) CheckUsersServises(ctx context.Context, tokenRes string, userID []int64) (models.UsersResult, error) {
 	const op = "check.UsersCheck"
 
 	log := c.log.With("op", op)
 	log.Info("Check users")
 
-	_usersResult, err := c.usersChecker.UsersCheck(ctx, userID)
+	_usersResult, err := c.usersChecker.UsersCheckDB(ctx, userID)
 	if err != nil {
 		return models.UsersResult{}, fmt.Errorf("%s: %w", op, err)
 	}

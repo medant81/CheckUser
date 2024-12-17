@@ -15,6 +15,7 @@ type Config struct {
 	TokenTTL         time.Duration          `yaml:"token_ttl" env-default:"1h"`
 	Storage          DBConfig               `yaml:"storage"`
 	StorageProcedure StorageProcedureConfig `yaml:"storage_procedure"`
+	Login            Login                  `yaml:"login"`
 }
 
 type GRPCConfig struct {
@@ -36,6 +37,11 @@ type StorageProcedureConfig struct {
 	NameSP    string `yaml:"name_sp"`
 	NameParam string `yaml:"name_param"`
 	TvpType   string `yaml:"tvp_type"`
+}
+
+type Login struct {
+	Name     string `yaml:"name"`
+	Password string `yaml:"password"`
 }
 
 func MustLoad() *Config {

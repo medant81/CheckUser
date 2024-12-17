@@ -25,18 +25,8 @@ func main() {
 		slog.Any("cfg", cfg),
 		slog.Int("port", cfg.GRPC.Port),
 	)
-	/*portStr := ""
-	if cfg.Storage.Port > 0 {
-		portStr = fmt.Sprintf(";port=%d", cfg.Storage.Port)
-	}
-	connString := fmt.Sprintf("server=%s%s;user id=%s;password=%s;database=%s;",
-		cfg.Storage.Server,
-		portStr,
-		cfg.Storage.User,
-		cfg.Storage.Password,
-		cfg.Storage.Database)*/
 
-	application := app.New(log, cfg.GRPC.Port, cfg.Storage, cfg.StorageProcedure, cfg.TokenTTL)
+	application := app.New(log, cfg)
 
 	go application.GRPCSrv.MustRun()
 

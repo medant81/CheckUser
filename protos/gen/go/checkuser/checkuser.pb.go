@@ -118,59 +118,6 @@ func (x *TokenRequest) GetPassword() string {
 	return ""
 }
 
-type TypeUsers struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Id    int64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Check bool  `protobuf:"varint,2,opt,name=check,proto3" json:"check,omitempty"`
-}
-
-func (x *TypeUsers) Reset() {
-	*x = TypeUsers{}
-	mi := &file_checkuser_checkuser_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *TypeUsers) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TypeUsers) ProtoMessage() {}
-
-func (x *TypeUsers) ProtoReflect() protoreflect.Message {
-	mi := &file_checkuser_checkuser_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TypeUsers.ProtoReflect.Descriptor instead.
-func (*TypeUsers) Descriptor() ([]byte, []int) {
-	return file_checkuser_checkuser_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *TypeUsers) GetId() int64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-func (x *TypeUsers) GetCheck() bool {
-	if x != nil {
-		return x.Check
-	}
-	return false
-}
-
 type CheckUsersRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -182,7 +129,7 @@ type CheckUsersRequest struct {
 
 func (x *CheckUsersRequest) Reset() {
 	*x = CheckUsersRequest{}
-	mi := &file_checkuser_checkuser_proto_msgTypes[3]
+	mi := &file_checkuser_checkuser_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -194,7 +141,7 @@ func (x *CheckUsersRequest) String() string {
 func (*CheckUsersRequest) ProtoMessage() {}
 
 func (x *CheckUsersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_checkuser_checkuser_proto_msgTypes[3]
+	mi := &file_checkuser_checkuser_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -207,7 +154,7 @@ func (x *CheckUsersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckUsersRequest.ProtoReflect.Descriptor instead.
 func (*CheckUsersRequest) Descriptor() ([]byte, []int) {
-	return file_checkuser_checkuser_proto_rawDescGZIP(), []int{3}
+	return file_checkuser_checkuser_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CheckUsersRequest) GetToken() string {
@@ -224,12 +171,65 @@ func (x *CheckUsersRequest) GetUsers() []int64 {
 	return nil
 }
 
+type TypeUsers struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id    int64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Check bool  `protobuf:"varint,2,opt,name=check,proto3" json:"check,omitempty"`
+}
+
+func (x *TypeUsers) Reset() {
+	*x = TypeUsers{}
+	mi := &file_checkuser_checkuser_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TypeUsers) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TypeUsers) ProtoMessage() {}
+
+func (x *TypeUsers) ProtoReflect() protoreflect.Message {
+	mi := &file_checkuser_checkuser_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TypeUsers.ProtoReflect.Descriptor instead.
+func (*TypeUsers) Descriptor() ([]byte, []int) {
+	return file_checkuser_checkuser_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *TypeUsers) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *TypeUsers) GetCheck() bool {
+	if x != nil {
+		return x.Check
+	}
+	return false
+}
+
 type CheckUsersResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Users []*TypeUsers `protobuf:"bytes,2,rep,name=users,proto3" json:"users,omitempty"`
+	Users []*TypeUsers `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
 }
 
 func (x *CheckUsersResponse) Reset() {
@@ -281,16 +281,16 @@ var file_checkuser_checkuser_proto_rawDesc = []byte{
 	0x08, 0x75, 0x73, 0x65, 0x72, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
 	0x08, 0x75, 0x73, 0x65, 0x72, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x61, 0x73,
 	0x73, 0x77, 0x6f, 0x72, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x61, 0x73,
-	0x73, 0x77, 0x6f, 0x72, 0x64, 0x22, 0x31, 0x0a, 0x09, 0x74, 0x79, 0x70, 0x65, 0x55, 0x73, 0x65,
-	0x72, 0x73, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02,
-	0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x08, 0x52, 0x05, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x22, 0x3f, 0x0a, 0x11, 0x43, 0x68, 0x65, 0x63,
-	0x6b, 0x55, 0x73, 0x65, 0x72, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x14, 0x0a,
-	0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x6f,
-	0x6b, 0x65, 0x6e, 0x12, 0x14, 0x0a, 0x05, 0x75, 0x73, 0x65, 0x72, 0x73, 0x18, 0x02, 0x20, 0x03,
-	0x28, 0x03, 0x52, 0x05, 0x75, 0x73, 0x65, 0x72, 0x73, 0x22, 0x40, 0x0a, 0x12, 0x43, 0x68, 0x65,
+	0x73, 0x77, 0x6f, 0x72, 0x64, 0x22, 0x3f, 0x0a, 0x11, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x55, 0x73,
+	0x65, 0x72, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f,
+	0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
+	0x12, 0x14, 0x0a, 0x05, 0x75, 0x73, 0x65, 0x72, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x03, 0x52,
+	0x05, 0x75, 0x73, 0x65, 0x72, 0x73, 0x22, 0x31, 0x0a, 0x09, 0x74, 0x79, 0x70, 0x65, 0x55, 0x73,
+	0x65, 0x72, 0x73, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52,
+	0x02, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x08, 0x52, 0x05, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x22, 0x40, 0x0a, 0x12, 0x43, 0x68, 0x65,
 	0x63, 0x6b, 0x55, 0x73, 0x65, 0x72, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
-	0x2a, 0x0a, 0x05, 0x75, 0x73, 0x65, 0x72, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x14,
+	0x2a, 0x0a, 0x05, 0x75, 0x73, 0x65, 0x72, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x14,
 	0x2e, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x55, 0x73, 0x65, 0x72, 0x2e, 0x74, 0x79, 0x70, 0x65, 0x55,
 	0x73, 0x65, 0x72, 0x73, 0x52, 0x05, 0x75, 0x73, 0x65, 0x72, 0x73, 0x32, 0x99, 0x01, 0x0a, 0x0b,
 	0x63, 0x68, 0x65, 0x63, 0x6b, 0x5f, 0x75, 0x73, 0x65, 0x72, 0x73, 0x12, 0x3c, 0x0a, 0x05, 0x54,
@@ -323,14 +323,14 @@ var file_checkuser_checkuser_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_checkuser_checkuser_proto_goTypes = []any{
 	(*TokenResponse)(nil),      // 0: checkUser.TokenResponse
 	(*TokenRequest)(nil),       // 1: checkUser.TokenRequest
-	(*TypeUsers)(nil),          // 2: checkUser.typeUsers
-	(*CheckUsersRequest)(nil),  // 3: checkUser.CheckUsersRequest
+	(*CheckUsersRequest)(nil),  // 2: checkUser.CheckUsersRequest
+	(*TypeUsers)(nil),          // 3: checkUser.typeUsers
 	(*CheckUsersResponse)(nil), // 4: checkUser.CheckUsersResponse
 }
 var file_checkuser_checkuser_proto_depIdxs = []int32{
-	2, // 0: checkUser.CheckUsersResponse.users:type_name -> checkUser.typeUsers
+	3, // 0: checkUser.CheckUsersResponse.users:type_name -> checkUser.typeUsers
 	1, // 1: checkUser.check_users.Token:input_type -> checkUser.TokenRequest
-	3, // 2: checkUser.check_users.check_users:input_type -> checkUser.CheckUsersRequest
+	2, // 2: checkUser.check_users.check_users:input_type -> checkUser.CheckUsersRequest
 	0, // 3: checkUser.check_users.Token:output_type -> checkUser.TokenResponse
 	4, // 4: checkUser.check_users.check_users:output_type -> checkUser.CheckUsersResponse
 	3, // [3:5] is the sub-list for method output_type
